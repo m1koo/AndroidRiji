@@ -1,0 +1,42 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+    </style>
+
+    <style name="LoginEditTextStyle">
+        <item name="android:background">@null</item>
+        <item name="android:paddingLeft">17dp</item>
+        <item name="android:paddingRight">17dp</item>
+        <item name="android:textCursorDrawable">@drawable/bg_login_cursor</item>
+        <item name="android:textColorHint">@color/loginHintColor</item>
+        <item name="android:textSize">15sp</item>
+
+    </style>
+
+    <style name="IndicatorStyle">
+        <item name="Color">#259b24</item>
+        <item name="text_size">18sp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+
+        <item name="android:textColor">@color/colorAccentThin</item>
+        <item name="android:textSize">12sp</item>
+
+    </style>
+
+    <style name="OverflowMenuStyle" parent="AppTheme.PopupOverlay">
+        <item name="overlapAnchor">false</item><!--把该属性改为false即可使menu位置位于toolbar之下-->
+    </style>
+</resources>

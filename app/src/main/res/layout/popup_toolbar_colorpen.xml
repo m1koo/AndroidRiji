@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="130dp"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    app:cardElevation="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                app:checkSize="24dp"
+                app:isCheckVisible = "true"
+                app:circleColor="@color/editorColor1" />
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector2"
+
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor2" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor3" />
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector4"
+
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor4" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor5" />
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector6"
+
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor6" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector7"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor7" />
+
+            <com.zd.miko.riji.CustomView.CircleIvWithCheck
+                android:id="@+id/id_color_selector8"
+
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                app:checkSize="24dp"
+                app:circleColor="@color/editorColor8" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/id_dialog_attach_titile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:text="添加附件"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:clickable="true"
+        android:id="@+id/id_rl_open_camera"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginTop="34dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="28dp"
+            android:background="@drawable/ic_camera_alt_black_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="35dp"
+            android:text="图片"
+            android:textColor="#757575"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:clickable="true"
+        android:layout_marginTop="34dp"
+        android:orientation="horizontal"
+        android:id="@+id/id_rl_open_mic"
+        android:layout_width="match_parent"
+        android:layout_height="36dp" >
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="28dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_mic_black_48dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+        <TextView
+            android:layout_marginLeft="35dp"
+            android:textColor="#757575"
+            android:textSize="18sp"
+            android:text="录音"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:clickable="true"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="34dp"
+        android:orientation="horizontal"
+        android:id="@+id/id_rl_add_video"
+        android:layout_width="match_parent"
+        android:layout_height="36dp" >
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="28dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_videocam_black_48dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+        <TextView
+            android:layout_marginLeft="35dp"
+            android:textColor="#757575"
+            android:textSize="18sp"
+            android:text="录制"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</LinearLayout>

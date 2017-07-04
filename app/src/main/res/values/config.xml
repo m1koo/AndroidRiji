@@ -1,0 +1,12 @@
+<resources>
+    <string name="host">http://47.94.109.74:8080/</string>
+    <string name="login_field">login</string>
+    <string name="phone_login_field">phone_login</string>
+
+    <string name="checkPhone_field">check_phone</string>
+    <string name="modify_pass_field">modify_pass</string>
+    <string name="register_field">register</string>
+    <string name="upload">upload</string>
+
+
+</resources>
