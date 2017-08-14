@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_rl_content"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/id_dialog_done_titile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:text="分享"
+        android:textColor="@color/editorColor1"
+        android:textSize="20sp" />
+    <TextView
+        android:textScaleX="1.02"
+        android:lineSpacingExtra="8dp"
+        android:textSize="16sp"
+        android:text="让更多人阅读您的日记，起一个标题吧"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:textCursorDrawable="@layout/bg_cursor_dialog_share"
+        android:hint="一个好标题更吸引人"
+        android:textSize="18sp"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/id_ed_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:textSize="17sp"
+        android:gravity="right"
+        android:id="@+id/id_bt_dialog_done_positive"
+        android:text="马上分享"
+        android:layout_marginRight="36dp"
+        android:layout_gravity="right"
+        android:textColor="@color/dialogConfirmColor"
+        android:background="@null"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp" />
+
+</LinearLayout>

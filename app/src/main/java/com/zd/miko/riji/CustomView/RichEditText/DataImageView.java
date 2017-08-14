@@ -13,9 +13,19 @@ import android.widget.ImageView;
  */
 public class DataImageView extends ImageView {
 
+	private int type;
+
 	private String absolutePath;
 
 	private Bitmap bitmap;
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 
 	public DataImageView(Context context) {
 		this(context, null);

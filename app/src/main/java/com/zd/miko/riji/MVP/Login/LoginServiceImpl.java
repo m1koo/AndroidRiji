@@ -16,6 +16,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 
 public class LoginServiceImpl implements LoginService {
+
+    /**context提出来方便单元测试*/
     private Context context;
 
     public LoginServiceImpl(Context context) {
@@ -23,15 +25,15 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public void doLogin(String userName, String password, LoginListener listener) {
+    public void getUserId(String type, String account,LoginListener listener) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(context.getResources().getString(R.string.host))
+                .baseUrl(context.getString(R.string.host))
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
 
+
         IRetrofitLoginService service = retrofit.create(IRetrofitLoginService.class);
-        Call<String> call = service.doPost(userName, password,
-                context.getString(R.string.login_field));
+        Call<String> call = service.doPost(account,type,"login");
 
         call.enqueue(new Callback<String>() {
             @Override

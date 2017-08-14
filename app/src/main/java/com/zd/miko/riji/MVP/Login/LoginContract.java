@@ -12,12 +12,15 @@ public interface LoginContract {
         void showProgress(String msg);
         void closeProgress();
         void showSnackBar(String msg);
-        String getUserName();
-        String getPassword();
+        String getPhone();
+        String getModifyCode();
+        void startCountDown();
+        void closeKeyboard();
     }
     interface Presenter extends BasePresenter{
-        void doLogin();
-        void login(String userName,String password);
-        void saveMd5(String md5);
+        void getModifyCode();
+        void doVerify();
+        void destroySSM();
+        void getUserId(String account, String type);
     }
 }

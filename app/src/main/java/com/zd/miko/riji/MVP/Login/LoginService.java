@@ -5,5 +5,5 @@ package com.zd.miko.riji.MVP.Login;
  */
 
 public interface LoginService {
-    void doLogin(String userName,String password,LoginListener listener);
+    void getUserId(String type,String account,LoginListener listener);
 }

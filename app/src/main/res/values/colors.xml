@@ -241,4 +241,6 @@
     <color name="accent">#FF4081</color>
     <color name="window_background">#FFF5F5F5</color>
     <color name="background_dark">#ECECEC</color>
+    <color name="home_header_bg">#4a4a4a</color>
+
 </resources>

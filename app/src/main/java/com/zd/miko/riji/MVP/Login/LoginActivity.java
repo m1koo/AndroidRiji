@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import com.zd.miko.riji.R;
 import com.zd.miko.riji.Utils.ActivityUtils;
 
+import cn.smssdk.SMSSDK;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -20,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_act);
+        SMSSDK.initSDK(this, "1c556f0697018", "e0e973786c86f839270d7b385121e4d8");
 
         initToolbar();
 
@@ -39,6 +42,12 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destroySSM();
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

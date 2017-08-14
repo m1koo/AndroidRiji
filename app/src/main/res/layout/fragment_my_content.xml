@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#efefef">
+
+
+    <RelativeLayout
+        android:id="@+id/id_prairie"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/ic_bg_prairie"
+        app:layout_heightPercent="50%w" />
+
+    <ImageView
+        android:id="@+id/id_cloud3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_above="@id/id_prairie"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_cloud1"
+        app:layout_heightPercent="12%w"
+        app:layout_marginRightPercent="2.77%w"
+        app:layout_widthPercent="42%w" />
+
+
+    <ImageView
+        android:layout_marginBottom="20dp"
+        android:id="@+id/id_cloud2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/id_cloud3"
+        android:background="@drawable/ic_cloud3"
+        app:layout_heightPercent="10.8%w"
+        app:layout_marginLeftPercent="12%w"
+        app:layout_widthPercent="22%w" />
+    <ImageView
+        android:id="@+id/id_cloud1"
+        android:layout_width="0dp"
+
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_above="@id/id_cloud2"
+        android:background="@drawable/ic_cloud2"
+        app:layout_heightPercent="10.8%w"
+        app:layout_marginRightPercent="30%w"
+        app:layout_widthPercent="27.7%w" />
+
+
+
+    <ImageView
+        android:id="@+id/id_leaf1"
+        android:layout_width="22.5dp"
+
+        android:layout_height="15dp"
+
+        android:layout_above="@+id/id_prairie"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-120dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/ic_leaf1" />
+
+    <ImageView
+        android:id="@+id/id_leaf2"
+        android:layout_width="19dp"
+        android:layout_height="20dp"
+        android:layout_above="@+id/id_prairie"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="-60dp"
+        android:layout_marginRight="-20dp"
+        android:background="@drawable/ic_leaf2" />
+
+
+    <RelativeLayout
+        android:id="@+id/id_rl_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_cloud1"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_hint1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="在6月还没有记过日记哦"
+            android:textColor="@color/black"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/id_hint2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/id_hint1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:text="点击右上角日历\n可以添加当月的日记哦"
+            android:textColor="#616161" />
+    </RelativeLayout>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent">
+
+        <TextView
+            android:id="@+id/id_tv_measure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4月"
+            android:textSize="18sp"
+            android:visibility="invisible" />
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:minHeight="73dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:statusBarScrim="@android:color/transparent">
+
+                <!--封面图片-->
+                <com.zd.miko.riji.CustomView.RippleView
+                    android:id="@+id/ripple_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_header"
+                    android:fitsSystemWindows="true">
+
+
+                    <com.zd.miko.riji.CustomView.CircleButton
+                        android:id="@+id/id_ov_s3"
+
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="260dp"
+                        android:layout_marginTop="80dp"
+                        android:tag="s3"
+                        android:typeface="monospace" />
+
+
+                    <com.zd.miko.riji.CustomView.CircleButton
+                        android:id="@+id/id_ov_s1"
+                        android:layout_width="70dp"
+
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="190dp"
+                        android:layout_marginTop="140dp"
+                        android:elevation="1dp"
+                        android:tag="s1" />
+
+
+                    <com.zd.miko.riji.CustomView.CircleButton
+                        android:id="@+id/id_ov_s2"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_above="@+id/id_ov_current"
+                        android:layout_alignRight="@id/id_ov_current"
+                        android:layout_marginBottom="-20dp"
+                        android:layout_marginRight="4dp"
+                        android:tag="s2"
+
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:typeface="monospace" />
+
+                    <com.zd.miko.riji.CustomView.CircleButton
+                        android:id="@+id/id_ov_current"
+                        android:layout_width="330dp"
+                        android:layout_height="330dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="-160dp"
+                        android:layout_marginLeft="-150dp"
+                        android:background="@drawable/bg_bt_oval"
+                        android:elevation="10dp"
+                        android:paddingBottom="80dp"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/white" />
+
+
+                    <TextView
+                        android:id="@+id/id_tv_currmonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="33dp"
+                        android:layout_marginTop="180dp"
+                        android:elevation="10dp"
+                        android:textColor="@color/white"
+                        android:textSize="40sp"
+                        android:typeface="monospace" />
+
+                    <com.zd.miko.riji.CustomView.CircleButton
+                        android:id="@+id/id_ov_calender"
+                        android:layout_width="180dp"
+                        android:layout_height="180dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="-90dp"
+                        android:layout_marginTop="-90dp"
+                        android:background="@drawable/bg_bt_oval"
+                        android:paddingRight="60dp"
+                        android:paddingTop="60dp"
+                        android:transitionName="shareCalendar" />
+
+
+                </com.zd.miko.riji.CustomView.RippleView>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="73dp"
+                    android:fitsSystemWindows="true"
+                    android:paddingTop="17dp"
+                    android:theme="@style/ToolbarLightOverflow"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:title="">
+
+
+                </android.support.v7.widget.Toolbar>
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_behavior="com.zd.miko.riji.MVP.Main.My.MyBehavior" />
+
+        <com.zhy.android.percent.support.PercentRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/id_recyc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="@color/transparent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+            <RelativeLayout
+                android:id="@+id/id_rl_recyc_alpha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000"
+                android:visibility="gone" />
+        </com.zhy.android.percent.support.PercentRelativeLayout>
+
+        <com.zd.miko.riji.CustomView.CircleButton
+            android:id="@+id/fab_anim"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/bg_bt_chips_circle"
+            android:transitionName="shareName"
+            app:elevation="4dp"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_mode_edit_white_48dp"
+            app:elevation="5dp"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end" />
+    </android.support.design.widget.CoordinatorLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>

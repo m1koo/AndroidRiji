@@ -44,6 +44,13 @@
     <string name="string_modify_pass">修改密码</string>
     <string name="string_login_without_pass">动态验证码登录</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="string_login_top_hint">登录你的日记，记忆永不流逝</string>
+    <string name="string_get_modify">获取验证码</string>
+    <string name="string_login_bt_hint">验证登录</string>
+    <string name="string_hint_more_waylogin">更多登录方式</string>
+    <string name="string_gif">动图</string>
+    <string name="string_video">视频</string>
+    <string name="share">share</string>
 
 
 </resources>

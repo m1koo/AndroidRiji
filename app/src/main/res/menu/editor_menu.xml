@@ -5,16 +5,10 @@
     <item
         app:showAsAction="always"
         android:id="@+id/action_attach"
-        android:icon="@drawable/ic_attach_file_white_48dp"
+        android:icon="@drawable/ic_photo_camera_white_24dp"
         android:orderInCategory="80"
         android:title=""/>
 
-    <item
-        app:showAsAction="always"
-        android:id="@+id/action_changeColor"
-        android:icon="@drawable/ic_color_lens_white_24dp"
-        android:orderInCategory="90"
-        android:title="" />
     <item
         android:id="@+id/action_done"
         app:showAsAction="always"

@@ -18,9 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.zd.miko.riji.Bean.ContentJson;
+import com.zd.miko.riji.Bean.Element;
 import com.zd.miko.riji.R;
 import com.zd.miko.riji.Utils.Utils;
 
@@ -37,6 +43,7 @@ public class RichTextEditor extends InterceptLinearLayout {
     private static final int EDIT_PADDING = 10; // edittext常规padding是10dp
     private static final int EDIT_FIRST_PADDING_TOP = 10; // 第一个EditText的paddingTop值
 
+    private int imageWidth = 200;
     private int viewTagIndex = 1; // 新生的view都会打一个tag，对每个view来说，这个tag是唯一的。
     private LinearLayout allLayout; // 这个是所有子view的容器，scrollView内部的唯一一个ViewGroup
     private LayoutInflater inflater;
@@ -58,7 +65,7 @@ public class RichTextEditor extends InterceptLinearLayout {
 
     private EditText firstEdit;
 
-    public LinearLayout getAllLayout(){
+    public LinearLayout getAllLayout() {
         return allLayout;
     }
 
@@ -95,6 +102,16 @@ public class RichTextEditor extends InterceptLinearLayout {
         init(attrs);
     }
 
+    public interface OnImageClickListener {
+        void onClick(String path, int type);
+    }
+
+    private OnImageClickListener clickListener;
+
+    public void setOnImageClickListener(OnImageClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
     public void setIntercept(boolean b) {
         super.setIntercept(b);
     }
@@ -103,7 +120,7 @@ public class RichTextEditor extends InterceptLinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RichTextEditor);
         hintText = array.getString(R.styleable.RichTextEditor_hintText);
         editNormalPadding = (int) array.getDimension(R.styleable.RichTextEditor_paddingLeftAndRight,
-                Utils.dpToPx(10, context));
+                Utils.dpToPx(10));
 
         array.recycle();
         fileUtils = new FileUtils(context);
@@ -141,13 +158,9 @@ public class RichTextEditor extends InterceptLinearLayout {
             }
         };
 
-        focusListener = new OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    lastFocusEdit = (EditText) v;
-                }
+        focusListener = (v, hasFocus) -> {
+            if (hasFocus) {
+                lastFocusEdit = (EditText) v;
             }
         };
 
@@ -227,9 +240,20 @@ public class RichTextEditor extends InterceptLinearLayout {
     /**
      * 生成文本输入框
      */
+
+    private TextView createTextView(String text, int paddingTop) {
+        TextView textView = (TextView) inflater.inflate(
+                R.layout.rich_read_text, null);
+        textView.setTextColor(textColor);
+        textView.setTextSize(textSize);
+        textView.setScaleX(1.02f);
+        textView.setPadding(editNormalPadding, paddingTop, editNormalPadding, 0);
+        return textView;
+    }
+
     private EditText createEditText(String hint, int paddingTop) {
         EditText editText = (EditText) inflater.inflate(
-                R.layout.richtextedit_textview, null);
+                R.layout.rich_text, null);
         editText.setScaleX(1.02f);
         editText.setTextSize(textSize);
         editText.setTextColor(textColor);
@@ -249,7 +273,7 @@ public class RichTextEditor extends InterceptLinearLayout {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
                     float mul = editText.getLineSpacingMultiplier();
                     editText.setLineSpacing(0f, 1f);
-                    editText.setLineSpacing(Utils.dpToPx(8,editText.getContext()), mul);
+                    editText.setLineSpacing(Utils.dpToPx(8), mul);
                 }
             }
         });
@@ -267,7 +291,7 @@ public class RichTextEditor extends InterceptLinearLayout {
      */
     private RelativeLayout createImageLayout() {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(
-                R.layout.richtextedit_imageview, null);
+                R.layout.rich_image, null);
         layout.setTag(viewTagIndex++);
         View closeView = layout.findViewById(R.id.image_close);
         closeView.setTag(layout.getTag());
@@ -275,30 +299,113 @@ public class RichTextEditor extends InterceptLinearLayout {
         return layout;
     }
 
-    /**
-     * 根据绝对路径添加view
-     *
-     * @param imagePath
-     */
-    public void insertImage(String imagePath) {
-        Bitmap bmp = getScaledBitmap(imagePath, getWidth());
-        insertImage(bmp, imagePath);
+    private RelativeLayout createGifLayout() {
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(
+                R.layout.rich_gif, null);
+        layout.setTag(viewTagIndex++);
+        View closeView = layout.findViewById(R.id.image_close);
+        closeView.setTag(layout.getTag());
+        closeView.setOnClickListener(btnListener);
+        return layout;
     }
 
-    /**
-     * 插入文字
-     *
-     * @param text
-     */
-    public void insertText(String text) {
-        View itemView = allLayout.getChildAt(allLayout.getChildCount() - 1);
-        if (itemView instanceof EditText) {
-            EditText item = (EditText) itemView;
-            if (item.getText() == null || item.getText().length() < 1)
-                item.setText(text);
-            else
-                addEditTextAtIndex(-1, text);
-        }
+    private RelativeLayout createVideoLayout() {
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(
+                R.layout.rich_video, null);
+        layout.setTag(viewTagIndex++);
+        View closeView = layout.findViewById(R.id.image_close);
+        closeView.setTag(layout.getTag());
+        closeView.setOnClickListener(btnListener);
+        return layout;
+    }
+
+
+
+
+    public static final int IMAGE = 0;
+    public static final int GIF = 1;
+    public static final int VIDEO = 2;
+    public static final int TEXT = -1;
+
+    public void insertReadText(String text) {
+        firstEdit.setVisibility(GONE);
+        TextView textView = createTextView(text, 10);
+        textView.setText(text);
+        allLayout.addView(textView);
+    }
+
+    public void insertReadVideo(String videoPath) {
+
+        RelativeLayout videoLayout = (RelativeLayout) LayoutInflater
+                .from(this.getContext())
+                .inflate(R.layout.rich_read_video, null);
+
+        ImageView imageView = (ImageView) videoLayout.findViewById(R.id.edit_imageView);
+
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        Glide.with(this).load(videoPath).into(imageView);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, Utils.dpToPx(imageWidth));
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.setMargins(editNormalPadding, 6, editNormalPadding, 6);
+        imageView.setLayoutParams(lp);
+        allLayout.addView(videoLayout);
+
+        ImageButton playButton = (ImageButton) videoLayout.findViewById(R.id.id_bt_play);
+
+        playButton.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onClick(videoPath, VIDEO);
+            }
+        });
+    }
+
+    public void insertReadGif(String imagePath) {
+
+        RelativeLayout imageLayout = (RelativeLayout) LayoutInflater
+                .from(this.getContext())
+                .inflate(R.layout.rich_read_gif, null);
+        ImageView imageView = (ImageView) imageLayout
+                .findViewById(R.id.edit_imageView);
+
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        Glide.with(this).load(imagePath).into(imageView);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, Utils.dpToPx(imageWidth));
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.setMargins(editNormalPadding, 6, editNormalPadding, 6);
+        imageView.setLayoutParams(lp);
+        allLayout.addView(imageLayout);
+        imageView.setOnClickListener(v -> {
+            if (clickListener != null)
+                clickListener.onClick(imagePath, GIF);
+        });
+    }
+
+    public void insertReadImage(String imagePath) {
+
+        RelativeLayout imageLayout = (RelativeLayout) LayoutInflater
+                .from(this.getContext())
+                .inflate(R.layout.rich_read_image, null);
+        ImageView imageView = (ImageView) imageLayout
+                .findViewById(R.id.edit_imageView);
+        Glide.with(this).load(imagePath).into(imageView);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, Utils.dpToPx(imageWidth));
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.setMargins(editNormalPadding, 6, editNormalPadding, 6);
+        imageView.setLayoutParams(lp);
+        allLayout.addView(imageLayout);
+        imageView.setOnClickListener(v -> {
+            if (clickListener != null)
+                clickListener.onClick(imagePath, IMAGE);
+        });
     }
 
     public void setRichTextColor(int color) {
@@ -329,7 +436,27 @@ public class RichTextEditor extends InterceptLinearLayout {
     /**
      * 插入一张图片
      */
-    private void insertImage(Bitmap bitmap, String imagePath) {
+    public void insertImage(String imagePath) {
+        String lastEditStr = lastFocusEdit.getText().toString();
+        int cursorIndex = lastFocusEdit.getSelectionStart();
+        String editStr1 = lastEditStr.substring(0, cursorIndex).trim();
+        int lastEditIndex = allLayout.indexOfChild(lastFocusEdit);
+        lastFocusEdit.setText(editStr1);
+        String editStr2 = lastEditStr.substring(cursorIndex).trim();
+
+        addEditTextAtIndex(lastEditIndex + 1, editStr2);
+        addImageViewAtIndex(lastEditIndex + 1, imagePath);
+
+        EditText ed = (EditText) allLayout.getChildAt(allLayout.getChildCount() - 1);
+
+        ed.requestFocus();
+        ed.setSelection(ed.getText().toString().length());
+//        lastFocusEdit.requestFocus();
+//        lastFocusEdit.setSelection(editStr1.length(), editStr1.length());
+        hideKeyBoard();
+    }
+
+    public void insertGif(String imagePath) {
         String lastEditStr = lastFocusEdit.getText().toString();
         int cursorIndex = lastFocusEdit.getSelectionStart();
         String editStr1 = lastEditStr.substring(0, cursorIndex).trim();
@@ -337,9 +464,27 @@ public class RichTextEditor extends InterceptLinearLayout {
         lastFocusEdit.setText(editStr1);
         String editStr2 = lastEditStr.substring(cursorIndex).trim();
         addEditTextAtIndex(lastEditIndex + 1, editStr2);
-        addImageViewAtIndex(lastEditIndex + 1, bitmap, imagePath);
-        lastFocusEdit.requestFocus();
-        lastFocusEdit.setSelection(editStr1.length(), editStr1.length());
+        addGifAtIndex(lastEditIndex + 1, imagePath);
+        EditText ed = (EditText) allLayout.getChildAt(allLayout.getChildCount() - 1);
+
+        ed.requestFocus();
+        ed.setSelection(ed.getText().toString().length());
+        hideKeyBoard();
+    }
+
+    public void insertVideo(String imagePath) {
+        String lastEditStr = lastFocusEdit.getText().toString();
+        int cursorIndex = lastFocusEdit.getSelectionStart();
+        String editStr1 = lastEditStr.substring(0, cursorIndex).trim();
+        int lastEditIndex = allLayout.indexOfChild(lastFocusEdit);
+        lastFocusEdit.setText(editStr1);
+        String editStr2 = lastEditStr.substring(cursorIndex).trim();
+        addEditTextAtIndex(lastEditIndex + 1, editStr2);
+        addVideoAtIndex(lastEditIndex + 1, imagePath);
+
+        EditText ed = (EditText) allLayout.getChildAt(allLayout.getChildCount() - 1);
+        ed.requestFocus();
+        ed.setSelection(ed.getText().toString().length());
         hideKeyBoard();
     }
 
@@ -358,33 +503,33 @@ public class RichTextEditor extends InterceptLinearLayout {
      * @param index   位置
      * @param editStr EditText显示的文字
      */
-    public void addEditTextAtIndex(final int index, String editStr) {
+    public EditText addEditTextAtIndex(final int index, String editStr) {
         EditText editText2 = createEditText("", getResources()
                 .getDimensionPixelSize(R.dimen.richtextedit_padding_top));
         editText2.setText(editStr);
-
         // 请注意此处，EditText添加、或删除不触动Transition动画
         allLayout.setLayoutTransition(null);
         allLayout.addView(editText2, index);
         allLayout.setLayoutTransition(mTransitioner); // remove之后恢复transition动画
+        return editText2;
     }
 
     /**
      * 在特定位置添加ImageView
      */
-    public void addImageViewAtIndex(final int index, Bitmap bmp,
+    public void addImageViewAtIndex(final int index,
                                     String imagePath) {
         final RelativeLayout imageLayout = createImageLayout();
         DataImageView imageView = (DataImageView) imageLayout
                 .findViewById(R.id.edit_imageView);
-        imageView.setImageBitmap(bmp);
-        imageView.setBitmap(bmp);
-        imageView.setAbsolutePath(imagePath);
+        imageView.setType(IMAGE);
+        Glide.with(this).load(imagePath).into(imageView);
 
-        // 调整imageView的高度
-        int imageHeight = (getWidth() - editNormalPadding * 2) * bmp.getHeight() / bmp.getWidth();
+        imageView.setAbsolutePath(imagePath);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, imageHeight);
+                LayoutParams.MATCH_PARENT, Utils.dpToPx(imageWidth));
         lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
         lp.setMargins(editNormalPadding, 6, editNormalPadding, 6);
         imageView.setLayoutParams(lp);
@@ -396,15 +541,80 @@ public class RichTextEditor extends InterceptLinearLayout {
                 allLayout.addView(imageLayout, index);
             }
         }, 200);
+
+        imageView.setOnClickListener(v -> {
+            if (clickListener != null)
+                clickListener.onClick(imagePath, IMAGE);
+        });
+
+    }
+
+    public void addVideoAtIndex(final int index,
+                                String imagePath) {
+        RelativeLayout imageLayout = createVideoLayout();
+        DataImageView imageView = (DataImageView) imageLayout
+                .findViewById(R.id.edit_imageView);
+        imageView.setType(VIDEO);
+
+        Glide.with(this).load(imagePath).into(imageView);
+
+        imageView.setAbsolutePath(imagePath);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        // 调整imageView的高度
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, Utils.dpToPx(imageWidth));
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.setMargins(editNormalPadding, 6, editNormalPadding, 6);
+        imageView.setLayoutParams(lp);
+
+        // onActivityResult无法触发动画，此处post处理
+        allLayout.postDelayed(() -> allLayout.addView(imageLayout, index), 200);
+        ImageButton playButton = (ImageButton) imageLayout.findViewById(R.id.id_bt_play);
+
+        playButton.setOnClickListener(v -> {
+            if (clickListener != null)
+                clickListener.onClick(imagePath, VIDEO);
+        });
+    }
+
+    public void addGifAtIndex(final int index,
+                              String imagePath) {
+        final RelativeLayout imageLayout = createGifLayout();
+        DataImageView imageView = (DataImageView) imageLayout
+                .findViewById(R.id.edit_imageView);
+        imageView.setType(GIF);
+        Glide.with(this).load(imagePath).into(imageView);
+
+        imageView.setAbsolutePath(imagePath);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, Utils.dpToPx(imageWidth));
+        lp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        lp.setMargins(editNormalPadding, 6, editNormalPadding, 6);
+        imageView.setLayoutParams(lp);
+
+        // onActivityResult无法触发动画，此处post处理
+        allLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                allLayout.addView(imageLayout, index);
+            }
+        }, 200);
+
+        imageView.setOnClickListener(v -> {
+            if (clickListener != null)
+                clickListener.onClick(imagePath, GIF);
+        });
     }
 
 
     /**
      * 根据view的宽度，动态缩放bitmap尺寸
-     *
-     * @param width view的宽度
      */
-    private Bitmap getScaledBitmap(String filePath, int width) {
+    public Bitmap getScaledBitmap(String filePath) {
+        int width = getWidth();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(filePath, options);
@@ -506,6 +716,40 @@ public class RichTextEditor extends InterceptLinearLayout {
         return dataList;
     }
 
+    public ContentJson getRichContent() {
+        List<Element> elements = new ArrayList<>();
+        int num = allLayout.getChildCount();
+        int imageIndex = 0, videoIndex = 0, gifIndex = 0, textIndex = 0;
+        for (int index = 0; index < num; index++) {
+            View itemView = allLayout.getChildAt(index);
+
+            Element e = new Element();
+
+            if (itemView instanceof EditText) {
+                EditText item = (EditText) itemView;
+                e.setElementType(TEXT);
+                e.setContent(item.getText().toString());
+                e.setIndex(textIndex++);
+            } else if (itemView instanceof RelativeLayout) {
+                DataImageView item = (DataImageView) itemView
+                        .findViewById(R.id.edit_imageView);
+                e.setElementType(item.getType());
+                e.setContent(item.getAbsolutePath());
+                if (item.getType() == IMAGE) {
+                    e.setIndex(imageIndex++);
+                } else if (item.getType() == GIF) {
+                    e.setIndex(gifIndex++);
+                } else if (item.getType() == VIDEO) {
+                    e.setIndex(videoIndex++);
+                }
+            }
+            elements.add(e);
+        }
+        ContentJson contentJson = new ContentJson();
+        contentJson.setElementList(elements);
+        return contentJson;
+    }
+
     public StringBuilder getRichEditData() {
         HashMap<String, Object> data = new HashMap<String, Object>();
         StringBuilder editTextSB = new StringBuilder();
@@ -528,7 +772,6 @@ public class RichTextEditor extends InterceptLinearLayout {
         }
         data.put("text", editTextSB);
         data.put("imgUrls", imgUrls);
-
         return sb;
     }
 

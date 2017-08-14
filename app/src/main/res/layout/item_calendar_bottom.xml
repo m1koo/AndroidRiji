@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/transparent">
+
+    <ImageView
+        android:id="@+id/id_iv_indicator"
+        app:layout_heightPercent = "3.9%w"
+        app:layout_widthPercent = "3.9%w"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_oval_stroke" />
+    <LinearLayout
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/id_iv_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:textSize="10sp"
+            android:id="@+id/id_tv_brief"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/ic_location_on_white_48dp" />
+
+            <TextView
+                android:textSize="9sp"
+                android:textColor="@color/white"
+                android:id="@+id/id_tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/id_tv_brief"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_gravity="center_vertical"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:background="@drawable/ic_location_on_white_48dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:textSize="9sp"
+                android:textColor="@color/white"
+                android:id="@+id/id_tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.zhy.android.percent.support.PercentRelativeLayout>

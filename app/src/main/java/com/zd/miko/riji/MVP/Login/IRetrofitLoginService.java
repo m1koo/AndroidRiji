@@ -13,6 +13,6 @@ import retrofit2.http.Path;
 public interface IRetrofitLoginService {
     @FormUrlEncoded
     @POST("{path}")
-    Call<String> doPost(@Field("userName") String userName
-            , @Field("password") String password, @Path("path") String path);
+    Call<String> doPost(@Field("account") String account
+            , @Field("type") String type, @Path("path") String path);
 }

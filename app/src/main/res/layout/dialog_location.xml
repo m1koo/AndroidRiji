@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/id_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/id_dialog_location_titile"
@@ -15,199 +15,58 @@
         android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 
-
-    <RelativeLayout
-        android:id="@+id/id_dialog_rl_unsetting"
-        android:tag="0"
-        android:focusable="true"
-        android:clickable="true"
+    <RadioGroup
+        android:id="@+id/id_radio_group"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="30dp">
 
-        <TextView
-            android:tag="text_0"
-            android:id="@+id/id_dialog_tv_unsetting"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/id_radio0"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
-            android:text="不显示位置"
-            android:textColor="@color/editorColor7"
-            android:textSize="18sp" />
+            android:button="@null"
+            android:drawableRight="@drawable/selector_radio_location"
+            android:text="不设置位置" />
 
-        <Button
-            android:tag="radio_0"
-            android:id="@+id/id_radio_unsetting"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_radio_button_checked_black_24dp" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/id_dialog_rl_city"
-        android:tag="1"
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:tag="text_1"
-            android:id="@+id/id_dialog_tv_city"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/id_radio1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
-            android:text="获取中"
-            android:textColor="@color/defaultTextColorDark"
-            android:textSize="18sp" />
+            android:layout_marginTop="30dp"
+            android:button="@null"
+            android:drawableRight="@drawable/selector_radio_location"
+            android:text="获取中" />
 
-
-        <Button
-            android:tag="radio_1"
-            android:id="@+id/id_radio_city"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_radio_button_checked_black_24dp"
-            android:visibility="invisible" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/id_dialog_rl_district"
-        android:tag="2"
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:tag="text_2"
-            android:id="@+id/id_dialog_tv_district"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/id_radio2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
-            android:text="获取中"
-            android:textColor="@color/defaultTextColorDark"
-            android:textSize="18sp" />
+            android:layout_marginTop="30dp"
+            android:button="@null"
+            android:drawableRight="@drawable/selector_radio_location"
+            android:text="获取中" />
 
+        <RadioButton
+            android:id="@+id/id_radio3"
 
-        <Button
-            android:tag="radio_2"
-            android:id="@+id/id_radio_district"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_radio_button_checked_black_24dp"
-            android:visibility="invisible" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/id_dialog_rl_street"
-        android:tag="3"
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:tag="text_3"
-            android:id="@+id/id_dialog_tv_street"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
-            android:text="获取中"
-            android:textColor="@color/defaultTextColorDark"
-            android:textSize="18sp" />
+            android:layout_marginTop="30dp"
+            android:button="@null"
+            android:drawableRight="@drawable/selector_radio_location"
+            android:text="获取中" />
+    </RadioGroup>
 
-        <Button
-            android:tag="radio_3"
-            android:id="@+id/id_radio_street"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_radio_button_checked_black_24dp"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/id_dialog_rl_aoi"
-        android:tag="4"
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:tag="text_4"
-            android:layout_centerVertical="true"
-            android:id="@+id/id_dialog_tv_aoi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:text="获取中"
-            android:textColor="@color/defaultTextColorDark"
-            android:textSize="18sp" />
-
-
-        <Button
-            android:tag="radio_4"
-            android:id="@+id/id_radio_aoi"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_radio_button_checked_black_24dp"
-            android:visibility="invisible" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/id_dialog_rl_poi"
-        android:tag="5"
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <TextView
-            android:tag="text_5"
-            android:layout_centerVertical="true"
-            android:id="@+id/id_dialog_tv_poi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:text="获取中"
-            android:textColor="@color/defaultTextColorDark"
-            android:textSize="18sp" />
-
-
-        <Button
-            android:tag="radio_5"
-            android:id="@+id/id_radio_poi"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/ic_radio_button_checked_black_24dp"
-            android:visibility="invisible" />
-    </RelativeLayout>
-
+    <!--<TextView-->
+        <!--android:layout_marginLeft="24dp"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
+        <!--android:text="自定义"-->
+        <!--android:id="@+id/id_tv_custom"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
 </LinearLayout>

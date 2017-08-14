@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:id="@+id/id_rl_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:transitionName="shareName"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:theme="@style/AppTheme.AppBarOverlay" />
+
+</RelativeLayout>
