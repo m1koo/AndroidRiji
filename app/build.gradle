@@ -74,5 +74,6 @@ dependencies {
     compile 'com.zhy:percent-support-extends:1.1.1'
     compile 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
     compile 'com.amap.api:location:latest.integration'
+    compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
 
 }

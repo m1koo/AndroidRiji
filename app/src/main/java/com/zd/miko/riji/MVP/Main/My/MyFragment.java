@@ -49,6 +49,7 @@ import com.zd.miko.riji.CustomView.RippleView;
 import com.zd.miko.riji.EventBusBean.ActivityEvent;
 import com.zd.miko.riji.MVP.Editor.EditActivity;
 import com.zd.miko.riji.MVP.Reader.ReaderActivity;
+import com.zd.miko.riji.MVP.Service.SynService;
 import com.zd.miko.riji.R;
 import com.zd.miko.riji.Utils.Utils;
 

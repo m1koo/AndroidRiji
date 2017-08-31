@@ -19,6 +19,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.zd.miko.riji.Adapter.MyVPAdapter;
 import com.zd.miko.riji.EventBusBean.ActivityEvent;
 import com.zd.miko.riji.MVP.Main.My.MyFragment;
+import com.zd.miko.riji.MVP.Service.SynService;
 import com.zd.miko.riji.MVP.World.WorldFragment;
 import com.zd.miko.riji.MyApp;
 import com.zd.miko.riji.R;
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         initEvent();
+        SynService.startService(this);
+
     }
 
     @Override

@@ -34,7 +34,7 @@ class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.MyVH> {
 
         /**缺省函数，parent不为null为true，null为false*/
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_world,
-                parent);
+                parent,false);
         MyVH myVH = new MyVH(view);
 
         return myVH;
@@ -84,7 +84,7 @@ class WorldAdapter extends RecyclerView.Adapter<WorldAdapter.MyVH> {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.size();
     }
 
     public class MyVH extends RecyclerView.ViewHolder {

@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,14 +15,32 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.baoyz.widget.PullRefreshLayout;
+import com.google.gson.Gson;
 import com.lapism.searchview.SearchView;
 import com.zd.miko.riji.Adapter.SearchAdapter.SearchAdapter;
+import com.zd.miko.riji.Bean.ArticleWorldBean;
+import com.zd.miko.riji.Bean.ArticleWorldBrief;
+import com.zd.miko.riji.Bean.ArticleWorldBriefs;
+import com.zd.miko.riji.Bean.PreviewObj;
+import com.zd.miko.riji.Bean.RealmBean.RealmArticleWorld;
+import com.zd.miko.riji.MVP.Service.IRetrofit.IRetroGetArticleService;
 import com.zd.miko.riji.R;
 import com.zd.miko.riji.Utils.Utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * create by miko
@@ -37,18 +56,20 @@ public class WorldFragment extends Fragment {
 
     private SearchAdapter searchAdapter;
 
+    private ArrayList<ArticleWorldBean> mData = new ArrayList<>();
 
     private SearchView searchView;
 
     private RecyclerView mRecycDiary;
 
-    private WorldAdapter adapter;
+    private WorldAdapter adapter = new WorldAdapter(mData);
 
     private LinearLayout linearLayout;
 
     private RecyclerView recyclerView;
     private ListView listView;
     private CardView cardView;
+    private PullRefreshLayout refreshLayout;
 
     public WorldFragment() {
         // Required empty public constructor
@@ -63,18 +84,171 @@ public class WorldFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_world, container, false);
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<RealmArticleWorld> realmArticleWorlds = realm
+                .where(RealmArticleWorld.class).findAll();
+        for(RealmArticleWorld r : realmArticleWorlds){
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    r.deleteFromRealm();
+                }
+            });
+        }
+        realm.close();
+
+
         initData();
-        initRecycData();
         initView(view);
+        initRecycData();
+
         initStatusBar();
+        initEvent();
         view.setBackgroundColor(currentColor);
+
         return view;
     }
 
     private void initRecycData() {
+        mRecycDiary.setAdapter(adapter);
+        mRecycDiary.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        /**从数据库中初始化数据*/
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmResults<RealmArticleWorld> realmArticlesPushed = realm
+                .where(RealmArticleWorld.class)
+                .equalTo("userId", Utils.getUserAccount())
+                .findAll();
+
+        for (RealmArticleWorld realmBean : realmArticlesPushed) {
+
+            ArticleWorldBean articleWorldBean = new ArticleWorldBean();
+
+            articleWorldBean.setUserName(realmBean.getUserName());
+            articleWorldBean.setUserId(realmBean.getUserId());
+            articleWorldBean.setEditTime(realmBean.getShareTime());
+            articleWorldBean.setContent(realmBean.getContent());
+            articleWorldBean.setTitle(realmBean.getTitle());
+
+            ArrayList<PreviewObj> previewObjs = new ArrayList<>();
+            String[] pathArray = realmBean.getImagePaths().split(" ");
+            for (String p : pathArray) {
+                String[] pInfo = p.split("_");
+                String url = getString(R.string.host) + "img/"
+                        + realmBean.getArticleId() + "/" + p + ".cvv";
+                PreviewObj previewObj;
+                if (pInfo[0].contains("image")) {
+                    previewObj = new PreviewObj(0, url);
+                } else if (pInfo[0].contains("gif")) {
+                    previewObj = new PreviewObj(0, url);
+                } else {
+                    previewObj = new PreviewObj(1, url);
+                }
+                previewObjs.add(previewObj);
+            }
+            articleWorldBean.setImagePaths(previewObjs);
+            articleWorldBean.setArticleId(realmBean.getArticleId());
+
+            mData.add(0,articleWorldBean);
+        }
+        adapter.notifyDataSetChanged();
+
+        realm.close();
+
+        // start refresh
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(getString(R.string.host))
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        IRetroGetArticleService service = retrofit
+                .create(IRetroGetArticleService.class);
+        service.getArticle(getString(R.string.getArticle), Utils.getUserAccount(), false).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                String res = response.body();
+
+                pressRefreshInfo(res);
+
+                refreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+//                Log.i("xyz", String.valueOf(t));
+                refreshLayout.setRefreshing(false);
+
+            }
+        });
 
     }
 
+
+    private void pressRefreshInfo(String res){
+        try {
+            String resDecode = URLDecoder.decode(res, "UTF-8");
+            Log.i("xyz", resDecode);
+
+            ArticleWorldBriefs articleWorldBriefs = new Gson()
+                    .fromJson(resDecode, ArticleWorldBriefs.class);
+            for (ArticleWorldBrief articleNet :
+                    articleWorldBriefs.getArticleWorldBriefs()) {
+                ArticleWorldBean articleBean = new ArticleWorldBean();
+                articleBean.setArticleId(articleNet.getArticleId());
+                articleBean.setTitle(articleNet.getTitle());
+                articleBean.setContent(articleNet.getContent());
+                articleBean.setEditTime(articleNet.getShareTime());
+                articleBean.setUserId(articleNet.getUserId());
+                articleBean.setUserName(articleNet.getUserName());
+                ArrayList<PreviewObj> previewObjs = new ArrayList<>();
+                String[] pathArray = articleNet.getPreviewPaths().split(" ");
+                for (String p : pathArray) {
+                    String[] pInfo = p.split("_");
+                    String url = getString(R.string.host) + "img/"
+                            + articleNet.getArticleId() + "/" + p + ".cvv";
+                    PreviewObj previewObj;
+                    if (pInfo[0].contains("image")) {
+                        previewObj = new PreviewObj(0, url);
+                    } else if (pInfo[0].contains("gif")) {
+                        previewObj = new PreviewObj(0, url);
+                    } else {
+                        previewObj = new PreviewObj(1, url);
+                    }
+                    previewObjs.add(previewObj);
+                }
+                articleBean.setImagePaths(previewObjs);
+                mData.add(0,articleBean);
+            }
+            adapter.notifyDataSetChanged();
+
+            /**存储到Realm*/
+            Realm r = Realm.getDefaultInstance();
+            r.executeTransaction(realm1 -> {
+                for (ArticleWorldBrief articleNet : articleWorldBriefs.getArticleWorldBriefs()) {
+                    RealmArticleWorld realmArticle = realm1
+                            .createObject(RealmArticleWorld.class);
+                    realmArticle.setUserName(articleNet.getUserName());
+                    realmArticle.setArticleId(articleNet.getArticleId());
+                    realmArticle.setUserId(articleNet.getUserId());
+                    realmArticle.setContent(articleNet.getContent());
+                    realmArticle.setImagePaths(articleNet.getPreviewPaths());
+                    realmArticle.setShareTime(articleNet.getShareTime());
+                    realmArticle.setReadUserId(Utils.getUserAccount());
+                    realmArticle.setTitle(articleNet.getTitle());
+                    realmArticle.setHadRead(false);
+                }
+            });
+            r.close();
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void initStatusBar() {
         RelativeLayout.LayoutParams param = (RelativeLayout.LayoutParams) searchView.getLayoutParams();
@@ -98,6 +272,7 @@ public class WorldFragment extends Fragment {
     }
 
     public void initView(View view) {
+        refreshLayout = (PullRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mRecycDiary = (RecyclerView) view.findViewById(R.id.id_rcyc_diarys);
         searchView = (SearchView) view.findViewById(R.id.searchView);
         searchView.setAdapter(searchAdapter);
@@ -118,7 +293,40 @@ public class WorldFragment extends Fragment {
     }
 
     public void initEvent() {
+        refreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
 
+
+                adapter.notifyDataSetChanged();
+
+                // start refresh
+                Retrofit retrofit = new Retrofit
+                        .Builder()
+                        .baseUrl(getString(R.string.host))
+                        .addConverterFactory(ScalarsConverterFactory.create())
+                        .build();
+
+                IRetroGetArticleService service = retrofit
+                        .create(IRetroGetArticleService.class);
+                service.getArticle(getString(R.string.getArticle), Utils.getUserAccount(), true).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        String res = response.body();
+                        pressRefreshInfo(res);
+
+                        refreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.i("xyz", t.getMessage());
+                        refreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        });
     }
 
     public void initSearchList() {

@@ -15,11 +15,13 @@ import com.zd.miko.riji.Bean.ContentJson;
 import com.zd.miko.riji.Bean.Element;
 import com.zd.miko.riji.Bean.RealmBean.RealmDiaryDetailBean;
 import com.zd.miko.riji.CustomView.RichEditText.RichTextEditor;
-import com.zd.miko.riji.MVP.Service.IRetrofit.IRetroUploadService;
+import com.zd.miko.riji.MVP.Service.IRetrofit.IRetroNormalService;
 import com.zd.miko.riji.R;
 import com.zd.miko.riji.Utils.RetrofitParameterBuilder;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 
 import io.realm.Realm;
@@ -95,7 +97,15 @@ public class UploadService extends IntentService {
             diaryBean.setYear(realmBean.getYear());
             diaryBean.setDay(realmBean.getDay());
             diaryBean.setMonth(realmBean.getMonth());
-            diaryBean.setContent(realmBean.getContent());
+            String content = realmBean.getContent();
+            String contentEncode = null;
+            try {
+                contentEncode = URLEncoder.encode(content, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                contentEncode = "内容丢失";
+            }
+            diaryBean.setContent(contentEncode);
             diaryBean.setLocation(realmBean.getLocationStr());
             diaryBean.setEditTime(realmBean.getEditTime());
             diaryBean.setArticleId(realmBean.getArticleId());
@@ -112,11 +122,12 @@ public class UploadService extends IntentService {
 
             String diaryJson = new Gson().toJson(diaryBean);
 
+            Log.i("xyz", diaryJson);
             /**不为null说明是share*/
             if (title != null) {
                 builder.addParameter("title", title);
                 builder.addParameter("isShare", true);
-            }else{
+            } else {
                 sendNotification();
             }
 
@@ -160,7 +171,7 @@ public class UploadService extends IntentService {
                     .baseUrl(getString(R.string.host))
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build();
-            IRetroUploadService service = retrofit.create(IRetroUploadService.class);
+            IRetroNormalService service = retrofit.create(IRetroNormalService.class);
             service.upload(getString(R.string.upload), params).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

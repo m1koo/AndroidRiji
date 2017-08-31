@@ -8,10 +8,8 @@ import android.os.Build;
 
 import java.util.ArrayList;
 
-import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmMigration;
 import io.realm.RealmSchema;
 
 public class MyApp extends Application {
@@ -36,20 +34,16 @@ public class MyApp extends Application {
         context = getApplicationContext();
         Realm.init(this);
         RealmConfiguration myConfig = new RealmConfiguration.Builder()
-                .schemaVersion(1)
-                .migration(new RealmMigration() {
-                    @Override
-                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-                        RealmSchema schema = realm.getSchema();
-                        if (oldVersion != 1 && newVersion == 1) {
-                            schema.get("RealmDiaryDetailBean").removeField("location")
-                                    .addField("longLatitude", String.class)
-                                    .addField("locationStr", String.class);
-//                            schema.create("RealmArticleWorld").addField()
-                            oldVersion = 1;
-                        }
-
+                .schemaVersion(3)
+                .migration((realm, oldVersion, newVersion) -> {
+                    RealmSchema schema = realm.getSchema();
+                    if (oldVersion != 3 && newVersion == 3) {
+                        schema.get("RealmArticleWorld")
+                                .addField("readUserId",String.class)
+                                .addField("hadRead",boolean.class);
+                        oldVersion = 3;
                     }
+
                 })
                 .build();
         Realm.setDefaultConfiguration(myConfig);
@@ -79,7 +73,5 @@ public class MyApp extends Application {
     public void onTerminate() {
         super.onTerminate();
     }
-
-
 
 }

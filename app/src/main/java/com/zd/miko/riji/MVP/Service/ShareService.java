@@ -54,6 +54,7 @@ public class ShareService extends IntentService {
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build();
             IRetroShareService service = retrofit.create(IRetroShareService.class);
+
             service.share(getString(R.string.share), title, articleId).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

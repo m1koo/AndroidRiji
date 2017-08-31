@@ -1,57 +1,36 @@
-package com.zd.miko.riji.Bean.RealmBean;
-
-import io.realm.RealmObject;
+package com.zd.miko.riji.Bean;
 
 /**
- * Created by Miko on 2017/8/11.
+ * Created by Miko on 2017/8/19.
  */
-
-public class RealmArticleWorld extends RealmObject {
-    private String title;
+public class ArticleWorldBrief {
     private String userName;
     private String userId;
     private String articleId;
     private long shareTime;
     private String content;
-    private String imagePaths;
-    private boolean hadRead;
-    private String readUserId;
-
-    public String getReadUserId() {
-        return readUserId;
-    }
-
-    public void setReadUserId(String readUserId) {
-        this.readUserId = readUserId;
-    }
-
-    public boolean isHadRead() {
-        return hadRead;
-    }
-
-    public void setHadRead(boolean hadRead) {
-        this.hadRead = hadRead;
-    }
+    private String title;
+    private String previewPaths;
 
     @Override
     public String toString() {
-        return "RealmArticleWorld{" +
-                "title='" + title + '\'' +
-                ", userName='" + userName + '\'' +
+        return "ArticleWorldBrief{" +
+                "userName='" + userName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", articleId='" + articleId + '\'' +
                 ", shareTime=" + shareTime +
                 ", content='" + content + '\'' +
-                ", imagePaths='" + imagePaths + '\'' +
+                ", title='" + title + '\'' +
+                ", previewPaths='" + previewPaths + '\'' +
                 '}';
     }
 
-    public String getTitle() {
-        return title;
+    public String getPreviewPaths() {
+        return previewPaths;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPreviewPaths(String previewPaths) {
+        this.previewPaths = previewPaths;
     }
 
     public String getUserName() {
@@ -94,11 +73,11 @@ public class RealmArticleWorld extends RealmObject {
         this.content = content;
     }
 
-    public String getImagePaths() {
-        return imagePaths;
+    public String getTitle() {
+        return title;
     }
 
-    public void setImagePaths(String imagePaths) {
-        this.imagePaths = imagePaths;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -2,6 +2,7 @@ package com.zd.miko.riji.Utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
@@ -15,7 +16,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.zd.miko.riji.MVP.Service.IRetrofit.IRetroNormalService;
 import com.zd.miko.riji.MyApp;
+import com.zd.miko.riji.R;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +28,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.TimeZone;
+
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by Miko on 2017/2/5.
@@ -33,8 +44,41 @@ import java.util.TimeZone;
 
 public class Utils {
 
+    public interface PostCall{
+        void onSuccess(String response);
+        void onFail(String error);
+    }
+    public static void normalPost(RetrofitParameterBuilder builder,String field,PostCall postCall) {
+        Map<String, RequestBody> params = builder.bulider();
+
+        Retrofit retrofit = new Retrofit
+                .Builder()
+                .baseUrl(MyApp.context.getString(R.string.host))
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+        IRetroNormalService service = retrofit.create(IRetroNormalService.class);
+        service.upload(field, params).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                postCall.onSuccess(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.i("xyz", "失败");
+            }
+        });
+    }
 
     private static WindowManager wm;
+
+    public static String getUserAccount() {
+        SharedPreferences sp = MyApp.context.getSharedPreferences("account",
+                Context.MODE_PRIVATE);
+
+        String userId = sp.getString("id", "AN12345");
+        return userId;
+    }
 
     public static String getHourMin(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");

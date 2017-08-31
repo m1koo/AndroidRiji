@@ -662,9 +662,7 @@ public class EditActivity extends AppCompatActivity {
         boolean isWifiConnect = NetWorkUtils.isWifiConnected(this);
 
         if(isWifiConnect){
-
             UploadService.startService(this, event.message,null);
-
         }
     }
 

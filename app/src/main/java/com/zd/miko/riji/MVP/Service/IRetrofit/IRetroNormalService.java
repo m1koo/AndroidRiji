@@ -13,7 +13,7 @@ import retrofit2.http.Path;
   * Created by Miko on 2017/7/25.
  */
 
-public interface IRetroUploadService {
+public interface IRetroNormalService {
     @Multipart
     @POST("{path}")
     Call<String> upload(@Path("path") String path,

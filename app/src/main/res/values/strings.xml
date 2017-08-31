@@ -51,6 +51,9 @@
     <string name="string_gif">动图</string>
     <string name="string_video">视频</string>
     <string name="share">share</string>
+    <string name="getArticle">push_articles</string>
+    <string name="syn">syn</string>
+    <string name="get_article_by_id">get_article</string>
 
 
 </resources>
