@@ -130,6 +130,7 @@ public class SynService extends IntentService {
             public void onSuccess(String response) {
                 Log.i("xyz",response);
 
+
             }
 
             @Override
