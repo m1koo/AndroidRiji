@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Snackbar snackbar;
-    //testfadfadfadf
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
