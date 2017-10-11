@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:theme="@style/AppTheme.AppBarOverlay" />
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/id_rl_bottom_editing"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/id_ed_comment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/bg_im_edit_comment"
+            android:hint="发表你的评论..."
+            android:paddingLeft="10dp"
+            app:layout_heightPercent="70%h"
+            app:layout_widthPercent="75%w" />
+
+        <Button
+            android:id="@+id/id_bt_comment_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:text="完成"
+            android:textColor="@color/circle_line"
+            android:textSize="18sp" />
+
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/id_rl_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d8d8d8" />
+
+        <RelativeLayout
+            android:id="@+id/id_rl_uneditable"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            app:layout_heightPercent="70%h"
+            app:layout_widthPercent="80%w">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_im_edit_comment" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:hint="写评论..."
+                android:textColor="#222222"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/id_bt_comment"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="24dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toRightOf="@+id/id_rl_uneditable"-->
+            <!--app:layout_marginLeftPercent="6%w">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="24dp"-->
+                <!--android:layout_height="24dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:src="@drawable/ic_chat_bubble_outline_black_48dp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tab_unread_message"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_alignParentTop="true"-->
+                <!--android:background="@drawable/bg_comment_bubble"-->
+                <!--android:gravity="center"-->
+                <!--android:text="10"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textSize="9sp" />-->
+        <!--</RelativeLayout>-->
+
+        <com.github.ivbaranov.mfb.MaterialFavoriteButton
+            android:id="@+id/id_bt_favorite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/id_rl_uneditable"
+            app:layout_marginLeftPercent="2.5%w"
+            app:mfb_animate_favorite="true"
+            app:mfb_animate_unfavorite="false"
+            app:mfb_bounce_duration="300"
+            app:mfb_color="black"
+            app:mfb_favorite_image="@drawable/ic_star_black_48dp"
+            app:mfb_not_favorite_image="@drawable/ic_star_border_black_48dp"
+            app:mfb_padding="0"
+            app:mfb_rotation_angle="360"
+            app:mfb_rotation_duration="400"
+            app:mfb_size="24"
+            app:mfb_type="star" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/id_rl_scroll_container"
+        android:layout_above="@+id/id_rl_bottom"
+        android:layout_below="@+id/id_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/id_scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="3dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <RelativeLayout
+
+                android:id="@+id/id_rl_scroll_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.zd.miko.riji.CustomView.RichEditText.RichTextEditor
+                    android:id="@+id/id_richedit_nativereader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/id_recyc_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/id_richedit_nativereader" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+
+</RelativeLayout>

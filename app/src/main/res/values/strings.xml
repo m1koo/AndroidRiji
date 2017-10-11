@@ -54,6 +54,10 @@
     <string name="getArticle">push_articles</string>
     <string name="syn">syn</string>
     <string name="get_article_by_id">get_article</string>
+    <string name="add_comment">add_comment</string>
+    <string name="get_article_comments">get_article_comments</string>
+    <string name="string_get_favorite">get_favorite_state</string>
+    <string name="string_change_favorite">change_favorite_state</string>
 
 
 </resources>

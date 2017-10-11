@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".MVP.Login.LoginActivity">
+    tools:context=".MVP.ModuleLogin.LoginActivity">
     <LinearLayout
         android:id="@+id/id_rl_root"
         android:layout_width="match_parent"

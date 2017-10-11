@@ -5,9 +5,9 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
-import com.zd.miko.riji.MVP.Login.LoginListener;
-import com.zd.miko.riji.MVP.Login.LoginService;
-import com.zd.miko.riji.MVP.Login.LoginServiceImpl;
+import com.zd.miko.riji.MVP.ModuleLogin.LoginListener;
+import com.zd.miko.riji.MVP.ModuleLogin.LoginService;
+import com.zd.miko.riji.MVP.ModuleLogin.LoginServiceImpl;
 import com.zd.miko.riji.R;
 
 import org.junit.Test;

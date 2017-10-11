@@ -1,24 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:orientation="vertical"
+    android:background="#E8EAEA"
+    tools:context=".MVP.PageMy.MyFragment">
 
-
-    <include
-        layout="@layout/fragment_my_content"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:background="@color/home_header_bg"
+        app:layout_heightPercent="38%h">
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"/>
+        <TextView
+            android:id="@+id/id_tv_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="Miko"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
 
-</android.support.v4.widget.DrawerLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/id_head_icon"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_above="@+id/id_tv_userName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:src="@mipmap/image" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/id_ln_myfavorite"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/ic_star" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:text="我的收藏"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#E8EAEA" />
+
+    <LinearLayout
+        android:id="@+id/id_ln_setting"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/ic_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:text="设置"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+
+
+</com.zhy.android.percent.support.PercentLinearLayout>

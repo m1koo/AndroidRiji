@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MVP.Login.LoginFragment">
+    tools:context=".MVP.ModuleLogin.LoginFragment">
 
     <RelativeLayout
         android:background="@color/background_dark"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MVP.Login.LoginActivity">
+        tools:context=".MVP.ModuleLogin.LoginActivity">
 
         <TextView
             android:textColor="@color/black"

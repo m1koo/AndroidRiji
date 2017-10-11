@@ -15,13 +15,14 @@ import com.zd.miko.riji.Bean.ContentJson;
 import com.zd.miko.riji.Bean.Element;
 import com.zd.miko.riji.Bean.RealmBean.RealmDiaryDetailBean;
 import com.zd.miko.riji.CustomView.RichEditText.RichTextEditor;
+import com.zd.miko.riji.MVP.ModuleEditor.EventBusMsg.MessageEvent;
 import com.zd.miko.riji.MVP.Service.IRetrofit.IRetroNormalService;
 import com.zd.miko.riji.R;
 import com.zd.miko.riji.Utils.RetrofitParameterBuilder;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import io.realm.Realm;
@@ -44,6 +45,10 @@ public class UploadService extends IntentService {
         super("UploadService");
     }
 
+    public interface UploadListener {
+        void onEnd();
+    }
+
     /**
      * Starts this service to perform action Foo with the given parameters. If
      * the service is already performing a task this action will be queued.
@@ -52,6 +57,7 @@ public class UploadService extends IntentService {
      */
     // TODO: Customize helper method
     public static void startService(Context context, String articleId, String title) {
+
         Intent intent = new Intent(context, UploadService.class);
         intent.putExtra("articleId", articleId);
         intent.putExtra("title", title);
@@ -81,7 +87,6 @@ public class UploadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
-
             String articleId = intent.getStringExtra("articleId");
 
             String title = intent.getStringExtra("title");
@@ -92,43 +97,36 @@ public class UploadService extends IntentService {
                     .equalTo("articleId", articleId)
                     .findFirst();
 
+            if(realmBean == null){
+                return;
+            }
             ArticleBean diaryBean = new ArticleBean();
             diaryBean.setCompleteFlag(realmBean.isCompleteFlag());
             diaryBean.setYear(realmBean.getYear());
             diaryBean.setDay(realmBean.getDay());
             diaryBean.setMonth(realmBean.getMonth());
-            String content = realmBean.getContent();
-            String contentEncode = null;
-            try {
-                contentEncode = URLEncoder.encode(content, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                contentEncode = "内容丢失";
-            }
-            diaryBean.setContent(contentEncode);
+
+            diaryBean.setContent(realmBean.getContent());
+
             diaryBean.setLocation(realmBean.getLocationStr());
+
             diaryBean.setEditTime(realmBean.getEditTime());
+
             diaryBean.setArticleId(realmBean.getArticleId());
+
             diaryBean.setUserId(realmBean.getUserId());
             diaryBean.setOutVisible(realmBean.isOutVisible());
-            /**get the contentJson then use gson transform it to obj
-             * to traverse and upload*/
-            String contentJson = realmBean.getContent();
 
-            ContentJson contentBean = new Gson().fromJson(contentJson,
-                    ContentJson.class);
             /**create a builder to content string and file*/
             RetrofitParameterBuilder builder = RetrofitParameterBuilder.newBuilder();
 
             String diaryJson = new Gson().toJson(diaryBean);
 
-            Log.i("xyz", diaryJson);
             /**不为null说明是share*/
             if (title != null) {
                 builder.addParameter("title", title);
                 builder.addParameter("isShare", true);
             } else {
-                sendNotification();
             }
 
             builder.addParameter("diaryJson", diaryJson);
@@ -139,6 +137,13 @@ public class UploadService extends IntentService {
             int imageIndex = 0;
             int videoIndex = 0;
             int gifIndex = 0;
+
+            /**get the contentJson then use gson transform it to obj
+             * to traverse and upload*/
+            String contentJson = realmBean.getContent();
+
+            ContentJson contentBean = new Gson().fromJson(contentJson,
+                    ContentJson.class);
 
             for (Element e : contentBean.getElementList()) {
                 if (e.getElementType() == RichTextEditor.IMAGE) {
@@ -175,9 +180,8 @@ public class UploadService extends IntentService {
             service.upload(getString(R.string.upload), params).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Log.i("xyz", response.body());
-                    NotificationManager notifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    notifyManager.cancel(1);
+                    EventBus.getDefault().post(new MessageEvent(articleId,
+                            "UploadListener"));
                 }
 
                 @Override

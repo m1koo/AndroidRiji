@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'realm-android'
+apply plugin: 'com.jakewharton.butterknife'
 
 android {
     compileSdkVersion 25
@@ -75,5 +76,8 @@ dependencies {
     compile 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
     compile 'com.amap.api:location:latest.integration'
     compile 'com.baoyz.pullrefreshlayout:library:1.2.0'
+    compile 'com.github.ivbaranov:materialfavoritebutton:0.1.4'
 
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

@@ -120,7 +120,7 @@ public class RichTextEditor extends InterceptLinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.RichTextEditor);
         hintText = array.getString(R.styleable.RichTextEditor_hintText);
         editNormalPadding = (int) array.getDimension(R.styleable.RichTextEditor_paddingLeftAndRight,
-                Utils.dpToPx(10));
+                Utils.dpToPx(0));
 
         array.recycle();
         fileUtils = new FileUtils(context);

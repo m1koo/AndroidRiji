@@ -54,10 +54,10 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <activity
-            android:name=".MVP.Login.LoginActivity"
+            android:name=".MVP.ModuleLogin.LoginActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MVP.Editor.ImagePreviewActivity"
+            android:name=".MVP.ModuleEditor.ImagePreviewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
@@ -66,9 +66,9 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".MVP.Editor.EditActivity"
+            android:name=".MVP.ModuleEditor.EditActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".MVP.Main.MainActivity">
+        <activity android:name=".MVP.MainContainerActivity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -76,7 +76,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MVP.Reader.ReaderActivity"
+            android:name=".MVP.ModuleReader.ReaderActivity"
+            android:label="@string/title_activity_reader"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
+            android:name=".MVP.ModuleReader.SharedReaderActivity"
             android:label="@string/title_activity_reader"
             android:theme="@style/AppTheme" />
 
